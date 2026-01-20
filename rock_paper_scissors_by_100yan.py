@@ -1,4 +1,4 @@
-# Program implementing the game "Rock - Paper - Scissors"
+# Console-based Rock–Paper–Scissors game with input validation and persistent score tracking.
 
 import sys, random
 
@@ -12,22 +12,9 @@ def main():
 
     while True:         # the main game loop
         results_tracker(wins, ties, losses)
-
-        while True:     # player prompts loop
-            instructions()
-            valid_input = {"r", "p", "s", "q"}
-            player_move = input()
-
-            if player_move not in valid_input:
-                invalid_command()
-            else:
-                if player_move == "q":
-                    game_over()
-                    sys.exit()
-                else:
-                    break
-
+        get_player_move()
         get_computer_move()
+        determine_result(get_player_move(), get_computer_move())
 
 
 def welcome():
@@ -65,15 +52,49 @@ def game_over():
 
 
 def get_computer_move():
-    random_move = random.randint(1, 3)
-    if random_move == 1:
-        computer_move = "r"
+    computer_move = random.choice(["r", "p", "s"])
+    if computer_move == "r":
         print("ROCK")
-    elif random_move == 2:
-        computer_move = "p"
+    elif computer_move == "p":
         print("PAPER")
     else:
-        computer_move = "k"
         print("SCISSORS")
-
     return computer_move
+
+
+def get_player_move():
+    while True:  # player prompts loop
+        instructions()
+        valid_input = {"r", "p", "s", "q"}
+        player_move = input()
+
+        if player_move not in valid_input:
+            invalid_command()
+        else:
+            if player_move == "q":
+                game_over()
+                sys.exit()
+            else:
+                break
+    return player_move
+
+
+def determine_result(player, computer):
+    wins = 0
+    ties = 0
+    losses = 0
+    win_rules = {
+        "r": "s",
+        "p": "r",
+        "s": "p"
+    }
+    if player == computer:
+        ties += 1
+        print("It is a tie!")
+    elif win_rules[player] == computer:
+        wins += 1
+        print("You win :)")
+    else:
+        losses += 1
+        print("You lose :(")
+    return wins, ties, losses

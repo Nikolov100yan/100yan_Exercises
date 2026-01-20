@@ -1,4 +1,4 @@
-# Console-based Rock–Paper–Scissors game with input validation and persistent score tracking.
+# Console-based Rock–Paper–Scissors game demonstrating modular design, input validation, and rule-based game logic.
 
 import sys, random
 
@@ -10,16 +10,19 @@ def main():
     ties = 0
     losses = 0
 
+    win_rules = {
+        "r": "s",
+        "p": "r",
+        "s": "p"
+    }
+
     while True:         # the main game loop
         results_tracker(wins, ties, losses)
         player_move = get_player_move()
         player_move_display(player_move)
         computer_move = get_computer_move()
-        win_rules = {
-            "r": "s",
-            "p": "r",
-            "s": "p"
-        }
+        display_computer_move(computer_move)
+
         if player_move == computer_move:
             ties += 1
             print("It is a tie!")
@@ -42,8 +45,8 @@ def print_separator():
     print("*" * 61)
 
 
-def results_tracker(x, y, z):
-    print(f"************* Wins: {x} *** Ties: {y} *** Losses: {z} *************")
+def results_tracker(wins, ties, losses):
+    print(f"************* Wins: {wins} *** Ties: {ties} *** Losses: {losses} *************")
     print_separator()
     print()
 
@@ -66,13 +69,16 @@ def game_over():
 
 def get_computer_move():
     computer_move = random.choice(["r", "p", "s"])
+    return computer_move
+
+
+def display_computer_move(computer_move):
     if computer_move == "r":
         print("ROCK")
     elif computer_move == "p":
         print("PAPER")
     else:
         print("SCISSORS")
-    return computer_move
 
 
 def get_player_move():

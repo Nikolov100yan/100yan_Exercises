@@ -12,9 +12,23 @@ def main():
 
     while True:         # the main game loop
         results_tracker(wins, ties, losses)
-        get_player_move()
-        get_computer_move()
-        determine_result(get_player_move(), get_computer_move())
+        player_move = get_player_move()
+        player_move_display(player_move)
+        computer_move = get_computer_move()
+        win_rules = {
+            "r": "s",
+            "p": "r",
+            "s": "p"
+        }
+        if player_move == computer_move:
+            ties += 1
+            print("It is a tie!")
+        elif win_rules[player_move] == computer_move:
+            wins += 1
+            print("You win :)")
+        else:
+            losses += 1
+            print("You lose :(")
 
 
 def welcome():
@@ -29,20 +43,19 @@ def print_separator():
 
 
 def results_tracker(x, y, z):
-    print_separator()
-    print(f"********* Wins: {x} *** Ties: {y} *** Losses: {z} **********")
+    print(f"************* Wins: {x} *** Ties: {y} *** Losses: {z} *************")
     print_separator()
     print()
 
 
 def instructions():
-    print("*** Enter your move: (r)ock, (p)aper or (s)cissors ***")
-    print("**************** For EXIT enter (q)uit ***************")
+    print("****** Enter your move: (r)ock, (p)aper or (s)cissors ******")
+    print("******************* For EXIT enter (q)uit ******************")
     print()
 
 
 def invalid_command():
-    print("******************* Invalid command *******************")
+    print("******************* Invalid command ******************")
 
 
 def game_over():
@@ -79,22 +92,14 @@ def get_player_move():
     return player_move
 
 
-def determine_result(player, computer):
-    wins = 0
-    ties = 0
-    losses = 0
-    win_rules = {
-        "r": "s",
-        "p": "r",
-        "s": "p"
-    }
-    if player == computer:
-        ties += 1
-        print("It is a tie!")
-    elif win_rules[player] == computer:
-        wins += 1
-        print("You win :)")
-    else:
-        losses += 1
-        print("You lose :(")
-    return wins, ties, losses
+def player_move_display(player_move):
+    if player_move == "r":
+        print("ROCK versus...")
+    elif player_move == "p":
+        print("PAPER versus...")
+    elif player_move == "s":
+        print("SCISSORS versus")
+
+
+if __name__ == "__main__":
+    main()
